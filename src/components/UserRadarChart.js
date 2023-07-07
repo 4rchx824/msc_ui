@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
     Radar,
     RadarChart,
@@ -11,7 +11,7 @@ import {
 } from "recharts";
 
 const UserRadarChart = ({ fill, accent }) => {
-    const data = [
+    const [data, setData] = useState([
         {
             subject: "Images",
             A: 5,
@@ -42,7 +42,7 @@ const UserRadarChart = ({ fill, accent }) => {
             B: 2,
             fullMark: 5,
         },
-    ];
+    ])
 
     const legendData = [
         { value: "Kenneth", color: fill },
@@ -51,7 +51,7 @@ const UserRadarChart = ({ fill, accent }) => {
     
 
     return (
-        <ResponsiveContainer className={"w-full"}>
+        <ResponsiveContainer className={"w-full"} width={500}>
             <RadarChart cx="50%" cy="50%" outerRadius="80%" data={data} >
                 <PolarGrid />
                 <PolarAngleAxis dataKey="subject" />

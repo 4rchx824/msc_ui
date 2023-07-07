@@ -27,7 +27,7 @@ function App() {
                 id="hidden_element"
             ></div>
             <div className="flex flex-col items-center justify-center">
-                <UserRadarChart fill={styles.fill} accent={styles.stroke} />
+            <UserRadarChart fill={styles.fill} accent={styles.stroke} />
                 <div className="flex items-center justify-center space-x-2 text-5xl pt-12">
                     <h1 className="font-light">Kenneth</h1>
                     <h1 className="font-bold text-5xl">
