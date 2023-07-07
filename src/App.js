@@ -19,6 +19,7 @@ function App() {
         );
     }, [theme]);
 
+
     return (
         <div data-theme={theme} className="min-h-screen h-full bg-base-200">
             <Navbar setTheme={setTheme} />
