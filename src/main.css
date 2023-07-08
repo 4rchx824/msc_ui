@@ -2211,8 +2211,16 @@ html {
   width: 100%;
 }
 
+.flex-shrink-0 {
+  flex-shrink: 0;
+}
+
 .resize {
   resize: both;
+}
+
+.flex-row {
+  flex-direction: row;
 }
 
 .flex-col {
@@ -2239,6 +2247,14 @@ html {
   --tw-space-x-reverse: 0;
   margin-right: calc(0.5rem * var(--tw-space-x-reverse));
   margin-left: calc(0.5rem * calc(1 - var(--tw-space-x-reverse)));
+}
+
+.overflow-x-auto {
+  overflow-x: auto;
+}
+
+.whitespace-nowrap {
+  white-space: nowrap;
 }
 
 .rounded-full {
@@ -2315,6 +2331,11 @@ html {
 
 .stroke-secondary-focus {
   stroke: hsl(var(--sf) / 1);
+}
+
+.px-12 {
+  padding-left: 3rem;
+  padding-right: 3rem;
 }
 
 .px-3 {
@@ -2442,7 +2463,7 @@ html {
 }
 
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 3px;
 }
 
 ::-webkit-scrollbar-track {
@@ -2460,9 +2481,88 @@ html {
   background: #555;
 }
 
+.hide-scrollbar::-webkit-scrollbar {
+  width: 0.5rem;
+  /* Width of the scrollbar */
+}
+
+.hide-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+  /* Background color of the scrollbar track */
+}
+
+.hide-scrollbar::-webkit-scrollbar-thumb {
+  background: transparent;
+  /* Color of the scrollbar thumb */
+}
+
+.marquee {
+  white-space: nowrap;
+  /* Prevent content from wrapping */
+  overflow: hidden;
+  /* Hide the overflowing content */
+}
+
+.marquee-content {
+  -webkit-animation: marquee 5s linear infinite;
+          animation: marquee 5s linear infinite;
+  /* Adjust the duration as needed */
+}
+
+@-webkit-keyframes marquee {
+  0% {
+    -webkit-transform: translateX(0);
+            transform: translateX(0);
+  }
+
+  100% {
+    -webkit-transform: translateX(-100%);
+            transform: translateX(-100%);
+    /* Adjust the distance to scroll */
+  }
+}
+
+@keyframes marquee {
+  0% {
+    -webkit-transform: translateX(0);
+            transform: translateX(0);
+  }
+
+  100% {
+    -webkit-transform: translateX(-100%);
+            transform: translateX(-100%);
+    /* Adjust the distance to scroll */
+  }
+}
+
 @media (min-width: 768px) {
+  .md\:w-\[500px\] {
+    width: 500px;
+  }
+
+  .md\:w-\[1000px\] {
+    width: 1000px;
+  }
+
+  .md\:w-\[750px\] {
+    width: 750px;
+  }
+
+  .md\:flex-col {
+    flex-direction: column;
+  }
+
+  .md\:flex-wrap {
+    flex-wrap: wrap;
+  }
+
+  .md\:justify-center {
+    justify-content: center;
+  }
+
   .md\:px-12 {
     padding-left: 3rem;
     padding-right: 3rem;
   }
 }
+  

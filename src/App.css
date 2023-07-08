@@ -20,7 +20,7 @@
 }
 
 ::-webkit-scrollbar {
-    width: 6px;
+    width: 3px;
 }
 
 ::-webkit-scrollbar-track {
@@ -36,3 +36,34 @@
 ::-webkit-scrollbar-thumb:hover {
     background: #555;
 }
+
+.hide-scrollbar::-webkit-scrollbar {
+    width: 0.5rem; /* Width of the scrollbar */
+  }
+  
+  .hide-scrollbar::-webkit-scrollbar-track {
+    background: transparent; /* Background color of the scrollbar track */
+  }
+  
+  .hide-scrollbar::-webkit-scrollbar-thumb {
+    background: transparent; /* Color of the scrollbar thumb */
+  }
+
+  .marquee {
+    white-space: nowrap; /* Prevent content from wrapping */
+    overflow: hidden; /* Hide the overflowing content */
+  }
+  
+  .marquee-content {
+    animation: marquee 5s linear infinite; /* Adjust the duration as needed */
+  }
+  
+  @keyframes marquee {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-100%); /* Adjust the distance to scroll */
+    }
+  }
+  

@@ -13,12 +13,19 @@ function App() {
     const [theme, setTheme] = useState("corporate");
     const [styles, setStyles] = useState("");
 
+    const [width, setWidth] = useState(window.innerWidth)
+
+   window.addEventListener("resize", (e) => {
+        setWidth(
+            e.target.innerWidth
+        );
+    });
+
     useEffect(() => {
         setStyles(
             window.getComputedStyle(document.getElementById("hidden_element"))
         );
     }, [theme]);
-
 
     return (
         <div data-theme={theme} className="min-h-screen h-full bg-base-100">
@@ -28,7 +35,7 @@ function App() {
                 id="hidden_element"
             ></div>
             <div className="flex flex-col items-center justify-center">
-            <UserRadarChart fill={styles.fill} accent={styles.stroke} />
+                <UserRadarChart fill={styles.fill} accent={styles.stroke} />
                 <div className="flex items-center justify-center space-x-2 text-5xl pt-12">
                     <h1 className="font-light">Kenneth</h1>
                     <h1 className="font-bold text-5xl">
@@ -50,12 +57,14 @@ function App() {
                     </p>
                 </blockquote>
 
-                <div className="flex items-center justify-center mt-12 flex-wrap" >
-                     <Cards />
-                     <Images />
-                     <Names />
-                     <Numbers />
-                     <Words />
+                <div className="flex items-center justify-center mt-12 overflow-x-auto w-full px-12 md:w-[750px] hide-scrollbar">
+                    <div className={`md:flex-wrap flex items-center justify-between md:justify-center whitespace-nowrap w-full ${width < 768 ? "marquee-content" : ""}`}>
+                        <Cards />
+                        <Images  />
+                        <Names />
+                        <Numbers  />
+                        <Words  />
+                    </div>
                 </div>
             </div>
         </div>
