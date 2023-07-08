@@ -1989,6 +1989,12 @@ html {
   }
 }
 
+.mockup-phone .display {
+  overflow: hidden;
+  border-radius: 40px;
+  margin-top: -25px;
+}
+
 @-webkit-keyframes modal-pop {
   0% {
     opacity: 0;
@@ -2205,6 +2211,10 @@ html {
   width: 100%;
 }
 
+.resize {
+  resize: both;
+}
+
 .flex-col {
   flex-direction: column;
 }
@@ -2253,11 +2263,6 @@ html {
   background-color: hsl(var(--b1) / var(--tw-bg-opacity));
 }
 
-.bg-base-200 {
-  --tw-bg-opacity: 1;
-  background-color: hsl(var(--b2) / var(--tw-bg-opacity));
-}
-
 .bg-base-300 {
   --tw-bg-opacity: 1;
   background-color: hsl(var(--b3) / var(--tw-bg-opacity));
@@ -2292,25 +2297,24 @@ html {
           background-clip: text;
 }
 
-.fill-accent {
-  fill: hsl(var(--a) / 1);
+.fill-primary {
+  fill: hsl(var(--p) / 1);
 }
 
 .fill-secondary {
   fill: hsl(var(--s) / 1);
 }
 
-.stroke-accent {
-  stroke: hsl(var(--a) / 1);
+.stroke-primary-focus {
+  stroke: hsl(var(--pf) / 1);
 }
 
 .stroke-secondary {
   stroke: hsl(var(--s) / 1);
 }
 
-.px-12 {
-  padding-left: 3rem;
-  padding-right: 3rem;
+.stroke-secondary-focus {
+  stroke: hsl(var(--sf) / 1);
 }
 
 .px-3 {
@@ -2454,4 +2458,11 @@ html {
 
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
+}
+
+@media (min-width: 768px) {
+  .md\:px-12 {
+    padding-left: 3rem;
+    padding-right: 3rem;
+  }
 }

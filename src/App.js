@@ -21,10 +21,10 @@ function App() {
 
 
     return (
-        <div data-theme={theme} className="min-h-screen h-full bg-base-200">
+        <div data-theme={theme} className="min-h-screen h-full bg-base-100">
             <Navbar setTheme={setTheme} />
             <div
-                className="hidden fill-secondary stroke-accent"
+                className="hidden fill-primary stroke-secondary"
                 id="hidden_element"
             ></div>
             <div className="flex flex-col items-center justify-center">
@@ -50,7 +50,7 @@ function App() {
                     </p>
                 </blockquote>
 
-                <div className="flex items-center justify-center mt-12 w-full flex-wrap" >
+                <div className="flex items-center justify-center mt-12 flex-wrap" >
                      <Cards />
                      <Images />
                      <Names />
