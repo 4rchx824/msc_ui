@@ -43,9 +43,9 @@ const Leaderboard = () => {
             </div>
 
             {isLoading ? (
-                <>
+                <div className="flex items-center justify-center min-h-screen">
                     <span className="loading loading-dots loading-lg text-primary"></span>
-                </>
+                </div>
             ) : hasError ? (
                 <ErrorAlert hasError={hasError} message={errorMessage} />
             ) : (
