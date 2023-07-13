@@ -2,8 +2,9 @@ const pool = require("../model/db_config");
 
 const User = {
     findOne: async (ichat) => {
+        let conn;
         try {
-            let conn = await pool.getConnection();
+            conn = await pool.getConnection();
             if (!ichat.includes("@ichat.sp.edu.sg"))
                 ichat += "@ichat.sp.edu.sg";
             const [rows, fields] = await conn.query(
@@ -18,10 +19,154 @@ const User = {
             return rows[0];
         } catch (e) {
             throw e;
+        } finally {
+            try {
+                if (conn) conn.release();
+            } catch (e) {
+                console.error(e);
+            }
+        }
+    },
+
+    searchMembers: async (searchType, searchString, pageNumber, count) => {
+        let conn;
+        try {
+            conn = await pool.getConnection();
+
+            let validSearchTypes = ["iChat", "Name"];
+
+            if (!validSearchTypes.includes(searchType))
+                throw new Error("INVALID SEARCH TYPE");
+            let searchBy = searchType.toLowerCase();
+
+            if (!Number.isInteger(pageNumber))
+                throw new Error("INVALID PAGE NUMBER");
+            const limit = 10;
+            let offset = (pageNumber - 1) * limit;
+            searchString = `%${searchString}%`;
+
+            const [rows, fields] = await conn.query(
+                `
+                SELECT m.member_id, m.ichat, m.name, s.images, s.cards, s.words, s.numbers, s.names
+                FROM members m, stats s
+                WHERE m.${searchBy} LIKE ?
+                AND m.ichat = s.ichat
+                ORDER BY
+                CASE
+                    WHEN s.images IS NOT NULL THEN 0
+                    ELSE 1
+                END,
+                CASE
+                    WHEN s.cards IS NOT NULL THEN 0
+                    ELSE 1
+                END,
+                CASE
+                    WHEN s.words IS NOT NULL THEN 0
+                    ELSE 1
+                END,
+                CASE
+                    WHEN s.numbers IS NOT NULL THEN 0
+                    ELSE 1
+                END,
+                CASE
+                    WHEN s.names IS NOT NULL THEN 0
+                    ELSE 1
+                END,
+                m.name ASC
+                LIMIT ? OFFSET ?
+                `, [searchString, limit, offset]
+                // `SELECT m.member_id, m.ichat, m.name, s.images, s.cards, s.words, s.numbers, s.names FROM members m, stats s WHERE m.${searchBy} LIKE ? AND m.ichat = s.ichat ORDER BY m.name ASC LIMIT ? OFFSET ?`,
+                // [searchString, limit, offset]
+            );
+
+            if (count === true) return Math.ceil(rows.length / limit);
+
+            return rows;
+        } catch (e) {
+            throw e;
+        } finally {
+            try {
+                if (conn) conn.release();
+            } catch (e) {
+                console.error(e);
+            }
+        }
+    },
+
+    searchQueryCount: async (searchType, searchString, pageNumber) => {
+        let conn;
+        try {
+            conn = await pool.getConnection();
+
+            let validSearchTypes = ["iChat", "Name"];
+
+            if (!validSearchTypes.includes(searchType))
+                throw new Error("INVALID SEARCH TYPE");
+            let searchBy = searchType.toLowerCase();
+
+            if (!Number.isInteger(pageNumber))
+                throw new Error("INVALID PAGE NUMBER");
+
+            searchString = `%${searchString}%`;
+
+            const [rows, fields] = await conn.query(
+                `SELECT COUNT(member_id) as MEMBER_COUNT FROM members m WHERE ${searchBy} LIKE ?`,
+                [searchString]
+            );
+
+            return Math.ceil(rows[0].MEMBER_COUNT / 10);
+        } catch (e) {
+            throw e;
+        } finally {
+            try {
+                if (conn) conn.release();
+            } catch (e) {
+                console.error(e);
+            }
+        }
+    },
+
+    getAdditionalInfo: async (ichat) => {
+        let conn;
+        try {
+            conn = await pool.getConnection();
+            if (!ichat.includes("@ichat.sp.edu.sg"))
+                ichat += "@ichat.sp.edu.sg";
+            const [rows, fields] = await conn.query(
+                "SELECT * FROM additional_info WHERE ichat = ?",
+                [ichat]
+            );
+
+            if (!rows?.length === 0) {
+                throw new Error(`MEMBER '${ichat}' DOES NOT EXIST`);
+            }
+
+            return rows[0];
+        } catch (e) {
+            throw e;
+        } finally {
+            try {
+                if (conn) conn.release();
+            } catch (e) {
+                console.error(e);
+            }
         }
     },
 
     findLevels: async (user) => {
+        let user_levels = {
+            name: user.name,
+            images: User.convertLevel(user.images, "images", "beginner"),
+            cards: User.convertLevel(user.cards, "cards", "beginner"),
+            words: User.convertLevel(user.words, "words", "beginner"),
+            numbers: User.convertLevel(user.numbers, "numbers", "beginner"),
+            names: User.convertLevel(user.names, "names", "beginner"),
+        };
+
+        return user_levels;
+    },
+
+    convertLevel: function (data, category, difficulty) {
         let beginner = {
             images: {
                 Level_1: 20,
@@ -60,44 +205,28 @@ const User = {
             },
         };
 
-        let user_images = user.images == null ? "UNATTEMPTED" : user.images;
-        let user_cards = user.cards == null ? "UNATTEMPTED" : user.cards;
-        let user_words = user.words == null ? "UNATTEMPTED" : user.words;
-        let user_numbers = user.numbers == null ? "UNATTEMPTED" : user.numbers;
-        let user_names = user.names == null ? "UNATTEMPTED" : user.names;
+        data = parseFloat(data)
 
-        let vars = [
-            { v: user_images, cat: "images" },
-            { v: user_cards, cat: "cards" },
-            { v: user_words, cat: "words" },
-            { v: user_numbers, cat: "numbers" },
-            { v: user_names, cat: "names" },
-        ];
+        let level = "";
+        if (data == null) return "UNATTEMPTED";
+        if (difficulty == "beginner") level = beginner;
 
-        for (const v of vars) {
-            if (v.v !== "UNATTEMPTED") v.v = v.v >= beginner[v.cat].Level_5
-            ? 5
-            : v.v >= beginner[v.cat].Level_4
-            ? 4
-            : v.v >= beginner[v.cat].Level_3
-            ? 3
-            : v.v >= beginner[v.cat].Level_2
-            ? 2
-            : v.v >= beginner[v.cat].Level_1
-            ? 1
-            : 0;
-        }
 
-        let user_levels = {
-            name: user.name,
-            images: user_images,
-            cards: user_cards,
-            words: user_words,
-            numbers: user_numbers,
-            names: user_names,
-        };
+        if (!Object.keys(beginner).includes(category)) return "UNATTEMPTED";
+        let attained_level =
+            data >= beginner[category].Level_5
+                ? 5
+                : data >= beginner[category].Level_4
+                ? 4
+                : data >= beginner[category].Level_3
+                ? 3
+                : data >= beginner[category].Level_2
+                ? 2
+                : data >= beginner[category].Level_1
+                ? 1
+                : 0;
 
-        return user_levels;
+        return attained_level;
     },
 };
 
