@@ -34,12 +34,12 @@ const Leaderboard = () => {
     }, []);
     return (
         <div className="my-8">
-            <div className="flex items-center justify-center space-x-4 text-5xl">
+            <div className="flex items-center justify-center space-x-4 text-5xl flex-wrap">
                 <div className="flex items-center justify-center space-x-2">
                     <h1 className="font-bold text-primary">SP</h1>
                     <h1 className="font-light">MSC</h1>
                 </div>
-                <h1 className="font-light">- Leaderboard ( TOP 15 )</h1>
+                <h1 className="font-light">Leaderboard</h1>
             </div>
 
             {isLoading ? (
