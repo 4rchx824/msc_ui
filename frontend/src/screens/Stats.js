@@ -103,7 +103,7 @@ function Stats() {
                             userDetails={userDetails}
                             ccaDetails={ccaDetails}
                         />
-                        <div className="flex items-center justify-center space-x-2 text-5xl pt-12">
+                        <div className="flex items-center justify-center space-x-2 text-5xl pt-12 flex-wrap">
                             <h1 className="font-light">{name.first}</h1>
                             <h1 className="font-bold text-5xl">
                                 <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent animate-gradient">

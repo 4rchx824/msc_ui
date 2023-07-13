@@ -3512,6 +3512,10 @@ html {
   flex-wrap: wrap;
 }
 
+.flex-wrap-reverse {
+  flex-wrap: wrap-reverse;
+}
+
 .items-center {
   align-items: center;
 }
