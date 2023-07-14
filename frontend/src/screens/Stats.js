@@ -103,14 +103,15 @@ function Stats() {
                             userDetails={userDetails}
                             ccaDetails={ccaDetails}
                         />
-                        <div className="flex items-center justify-center space-x-2 text-5xl pt-12 flex-wrap">
-                            <h1 className="font-light">{name.first}</h1>
-                            <h1 className="font-bold text-5xl">
-                                <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent animate-gradient">
-                                    {name.last}
+                        <div className="flex items-center justify-center space-x-2 text-5xl pt-12 flex-wrap text-center">
+                            <h1 className="font-light">
+                                {name.first}
+                                <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent animate-gradient font-bold">
+                                    {" " + name.last}
                                 </span>
                             </h1>
                         </div>
+
                         <div className="flex items-center justify-center space-x-2  mt-8 text-sm">
                             <h1 className="italic font-light">CCA Ranking:</h1>
 
