@@ -7,7 +7,7 @@ const SearchResultRow = ({ member }) => {
         navigate(`/${ichat}/stats`)
     }
     return (
-        <tr onClick={handleRowClicked} className="hover">
+        <tr onClick={handleRowClicked} className="hover hover:cursor-pointer">
             <td>{member.name}</td>
             <td>{member.images == null ? "Unattempted" : member.images}</td>
             <td>{member.cards == null ? "Unattempted" : member.cards}</td>

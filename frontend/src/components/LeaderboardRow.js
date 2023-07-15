@@ -8,7 +8,7 @@ const LeaderboardRow = ({ member }) => {
     };
 
     return (
-        <tr onClick={handleRowClicked} className="hover">
+        <tr onClick={handleRowClicked} className="hover hover:cursor-pointer">
             <td>
                 <div className="flex items-center justify-center">
                     <h1

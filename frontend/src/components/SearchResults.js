@@ -3,7 +3,7 @@ import ErrorAlert from "./ErrorAlert";
 import { axiosPrivate } from "../api/axios";
 import SearchResultRow from "./SearchResultRow";
 
-const SearchResults = ({ searchOptions, page, setMaxPage }) => {
+const SearchResults = ({ searchOptions, page, setMaxPage, setIsLoading }) => {
     const [data, setData] = useState([]);
     const [isLoading, setLoading] = useState(true);
     const [hasError, setHasError] = useState(false);
@@ -14,6 +14,7 @@ const SearchResults = ({ searchOptions, page, setMaxPage }) => {
     const fetchData = async () => {
         try {
             setLoading(true);
+            setIsLoading(true);
             let { data } = await axiosPrivate.post("/search", {
                 ...searchOptions,
                 page: page,
@@ -32,7 +33,10 @@ const SearchResults = ({ searchOptions, page, setMaxPage }) => {
             );
             setHasError(true);
         } finally {
-            setLoading(false);
+            setTimeout(() => {
+                setLoading(false);
+                setIsLoading(false);
+            }, 800);
         }
     };
 
@@ -41,7 +45,11 @@ const SearchResults = ({ searchOptions, page, setMaxPage }) => {
     }, [searchOptions, page]);
 
     return (
-        <div className={`w-full h-full flex flex-col items-center ${isLoading ? "justify-center" : ""} flex-grow`}>
+        <div
+            className={`w-full h-full flex flex-col items-center ${
+                isLoading ? "justify-center" : ""
+            } flex-grow`}
+        >
             {isLoading ? (
                 <>
                     <span className="loading loading-dots loading-lg text-primary"></span>
@@ -51,7 +59,9 @@ const SearchResults = ({ searchOptions, page, setMaxPage }) => {
             ) : (
                 <>
                     {data.length === 0 ? (
-                        <h1>There are no results for your search...</h1>
+                        <div className="flex flex-col items-center justify-center flex-grow">
+                            <h1>There are no results for your search...</h1>
+                        </div>
                     ) : (
                         <div className="w-full overflow-x-auto">
                             <table className="table">
@@ -67,7 +77,10 @@ const SearchResults = ({ searchOptions, page, setMaxPage }) => {
                                 </thead>
                                 <tbody>
                                     {data.map((member) => (
-                                        <SearchResultRow member={member} key={member.member_id}/>
+                                        <SearchResultRow
+                                            member={member}
+                                            key={member.member_id}
+                                        />
                                     ))}
                                 </tbody>
                             </table>

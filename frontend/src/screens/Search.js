@@ -13,6 +13,8 @@ const Search = () => {
     const [textInput, setTextInput] = useState("");
     const [maxPage, setMaxPage] = useState(1);
 
+    const [Loading, setIsLoading] = useState(false)
+
     const handleChangeType = (e) => {
         e.target.checked === true
             ? setSearchType("iChat")
@@ -45,7 +47,7 @@ const Search = () => {
             <div className="flex flex-col items-center justify-center w-full h-full flex-grow">
                 <form className="flex items-center justify-center space-x-4 py-6 w-full" onSubmit={handleFormSubmit}>
                     <label className="swap btn btn-ghost text-primary rounded-md">
-                        <input type="checkbox" onClick={handleChangeType} id="searchType" defaultChecked={searchType === "iChat" ? true : false} />
+                        <input type="checkbox" onClick={handleChangeType} id="searchType" defaultChecked={searchType === "iChat" ? true : false} disabled={Loading}/>
                         <div className="swap-on">iChat</div>
                         <div className="swap-off">Name</div>
                     </label>
@@ -54,8 +56,9 @@ const Search = () => {
                         placeholder={"Search " + searchType}
                         className="input input-bordered input-primary w-full max-w-md rounded-md"
                         onChange={handleTextInput}
+                        disabled={Loading}
                     />
-                    <button className="btn btn-primary" onClick={handleSearch}>
+                    <button className="btn btn-primary" onClick={handleSearch} disabled={Loading}>
                         <h1>Search</h1>
                     </button>
                 </form>
@@ -64,6 +67,7 @@ const Search = () => {
                     searchOptions={searchOptions}
                     page={page}
                     setMaxPage={setMaxPage}
+                    setIsLoading={setIsLoading}
                 />
             </div>
 
